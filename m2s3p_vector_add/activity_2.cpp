@@ -71,16 +71,18 @@ void parallel_omp(unsigned long size) {
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(stop - start);
     cout << "time taken by random_vector_omp: " << duration.count() << "ms" << endl;
-
     start = high_resolution_clock::now();
-    #pragma omp parallel for num_threads(num_cores) shared (v1, v2, v3, size) default(none)
+    int total = 0;
+    #pragma omp parallel for num_threads(num_cores) shared (v1, v2, v3, size, num_cores) default(none) reduction(+:total) schedule(static)
     for (int i = 0; i < size; i++)
     {
         v3[i] = v1[i] + v2[i];
+        total += v3[i];
     }
     stop = high_resolution_clock::now();
     duration = duration_cast<milliseconds>(stop - start);
     cout << "time taken by omp sum v3: " << duration.count() << "ms" << endl;
+    cout << "total sum of v3 elements (reduction): " << total << endl;
 
     free(v1);
     free(v2);
