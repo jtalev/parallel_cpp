@@ -1,0 +1,27 @@
+-----proof the program works-----
+m1:
+1 7 
+4 0 
+
+m2:
+9 4 
+8 8 
+
+m3:
+65 60 
+36 16 
+
+-----timing the sequential program-----
+sequential program: 5636ms
+
+-----how i plan to parallelise the program----
+the sequential program calculates the resulting matrix one row at a time, pushing the rows to the matrix after each is built.
+i plan on parallelising this by first creating a matrix of the required size, then dividing the number of rows
+by the number of threads available. this way, each thread is responsible for calculating its own chunk of the resulting matrix.
+the actual multiplication algorithm will remain largely unchanged for the time being...
+
+-----timing the std::thread program-----
+std::thread program: 1276ms
+
+-----checking result matrices-----
+matrices match :)
