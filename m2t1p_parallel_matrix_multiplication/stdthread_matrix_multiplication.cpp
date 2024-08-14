@@ -10,6 +10,20 @@ using namespace std::chrono;
 typedef vector<vector<int>> mInt;
 const int n = 1000;
 
+void print_matrix(mInt& matrix, ofstream& file) {
+    int rows = matrix.size();
+    int columns = matrix[0].size();
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            cout << matrix[i][j] << " ";
+            file << matrix[i][j] << " ";
+        }
+        cout << endl;
+        file << "\n";
+    }
+}
+
 mInt load_matrix_from_file(string filename) {
     ifstream file(filename);
     mInt matrix;
@@ -87,13 +101,34 @@ int main() {
     ofstream file;
     file.open("output.txt", std::ios::app);
 
+    cout << "-----proof the std:thread program works-----" << endl;
+    file << "-----proof the std:thread program works-----" << endl;
+
+    mInt test1 = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    mInt test2 = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    mInt test_results(3, vector<int>(3));
+    multiply_matrices(test1, test2, test_results);
+    cout << "m1:" << endl;
+    file << "m1:" << endl;
+    print_matrix(test1, file);
+    cout << endl
+         << "m2:" << endl;
+    file << endl
+         << "m2:" << endl;
+    print_matrix(test2, file);
+    cout << endl
+         << "m3:" << endl;
+    file << endl
+         << "m3:" << endl;
+    print_matrix(test_results, file);
+
     mInt m1 = load_matrix_from_file("m1.txt");
     mInt m2 = load_matrix_from_file("m2.txt");
     mInt m3(n, vector<int>(n));
     mInt seq_result = load_matrix_from_file("m3.txt");
 
-    cout << "-----timing the std::thread program-----" << endl;
-    file << "-----timing the std::thread program-----" << endl;
+    cout << "\n-----timing the std::thread program-----" << endl;
+    file << "\n-----timing the std::thread program-----" << endl;
     auto start = high_resolution_clock::now();
     multiply_matrices(m1, m2, m3);
     auto stop = high_resolution_clock::now();
